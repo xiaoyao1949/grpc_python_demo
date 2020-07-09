@@ -1,14 +1,53 @@
-syntax = "proto3";
+syntax = "proto3";  //指定使用proto3语法，必须是文件的非空非注释的第一行
 
 package demo;
+//import xxx 可以导入其他文件或包中定义的消息或服务
+
+// 定义服务
 service Demo{
+  // simple rpc
   rpc SayHello(HelloRequest) returns (HelloReply){}
+
+  //server2client stream rpc
+  rpc XXXX(X) returns (stream Y){}
+
+  //client2server stream rpc
+  rpc YYYY(stream X) returns (Y){}
+
+  //stream rpc
+  rpc ZZZZ(stream X) returns (stream Y){}
 }
 
+// 定义消息结构
 message HelloRequest{
-  string name = 1;
+  // filed_type filed_name=index;
+  string name = 1;  //参数的索引值，类比golang的iota \
+  // 数字标识符。这些标识符是用来在消息的二进制格式中识别各个字段的，一旦开始使用就不能够再改变。
+  // 注：[1,15]之内的标识号在编码的时候会占用一个字节。[16,2047]之内的标识号则占用2个字节。
+  // 所以应该为那些频繁出现的消息元素保留 [1,15]之内的标识号。
+  // 切记：要为将来有可能添加的、频繁出现的标识号预留一些标识号。
+  // 最小的标识号可以从1开始，最大到2^29 - 1, or 536,870,911。不可以使用其中的[19000－19999]
+  // [19000－19999]是从FieldDescriptor::kFirstReservedNumber 到 FieldDescriptor::kLastReservedNumber)）的标识号，
 }
 
 message HelloReply{
   string result = 1;
 }
+
+/*
+可选的数值类型
+double  float int32 uint32  sint32  sint64  fixed32 fixed64 sfixed32  sfixed64  bool  string  bytes
+
+也可以自定义枚举类型,枚举的第一个常量必须映射为0
+enum Color{
+  blue=0;
+  red=1;
+  black=2;
+  white=3;
+}
+
+Color c = 1;
+
+还有字典/映射/哈希 类型
+map<string, int32> score = 3;
+*/
