@@ -2,7 +2,7 @@ appdirs==1.4.4
 attrs==19.3.0
 black==19.10b0
 click==7.1.2
-grpcio==1.30.0
+grpcio==1.53.0
 grpcio-tools==1.30.0
 pathspec==0.8.0
 protobuf==3.12.2
